@@ -42,18 +42,16 @@ That's (almost) it. No time fiddling bleeding into your tests, no need to rememb
 ## With a rule
 ```java
 class MyTests {
-
     @Rule public JodaRule rule = new JodaRule()
-
 }
 ```
 
 ## With a runner
 ```java
-    @RunWith(JodaAwareJUnit4Runner)
-    class MyTests {
+@RunWith(JodaAwareJUnit4Runner)
+class MyTests {
 
-    }
+}
 ```
 
 It gets even less tedious.
@@ -68,11 +66,11 @@ void testTheThings() {}
 Or there are a few more out of the box:
 ```java
 @Test
-@Joda(timestamp = '2013-12-25', format = Format.YYYYMMDD)
+@Joda(timestamp = "2013-12-25", format = Format.YYYYMMDD)
 void testMoreStuff() {}
 
 @Test
-@Joda(timestamp = '2012-11-19 13:03:22', format = Format.YYYYMMDD_HHMMSS)
+@Joda(timestamp = "2012-11-19 13:03:22", format = Format.YYYYMMDD_HHMMSS)
 void keepOnTesting() {}
 ```
 
