@@ -1,6 +1,10 @@
 package com.elevenware.joann;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.runners.model.Statement;
 
 /**
@@ -32,11 +36,52 @@ public class JodaAwareStatement extends Statement {
             return;
 
         }
-        long value = joda.value();
-        LOG.fine(String.format("Found Joda annotation on %s, setting Joda time to %s", testName, String.valueOf(value)));
-        DateTimeUtils.setCurrentMillisFixed(joda.value());
+        switch(joda.format()) {
+            case USE_MILLIS:
+                long value = joda.value();
+                LOG.fine(String.format("Found Joda annotation on %s, setting Joda time to %s", testName, String.valueOf(value)));
+                setByMillis();
+                break;
+            case ISO:
+                setToIso();
+                break;
+            case YYYYMMDD:
+                setToFormat();
+                break;
+            default: {
+                if (joda.value() == -1L && !joda.timestamp().equals("")) {
+                   setToIso();
+                }
+                if ( joda.value() > 01L) {
+                    setByMillis();
+                }
+            }
+                break;
+
+
+        }
+
         base.evaluate();
+
         LOG.fine(String.format("Re-setting Joda time to system time for %s", testName));
         DateTimeUtils.setCurrentMillisSystem();
     }
+
+    private void setToFormat() {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(joda.format().pattern());
+        DateTime dt = fmt.parseDateTime(joda.timestamp());
+        DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
+
+    }
+
+    private void setToIso() {
+        DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+        DateTime dt = fmt.parseDateTime(joda.timestamp());
+        DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
+    }
+
+    private void setByMillis() {
+        DateTimeUtils.setCurrentMillisFixed(joda.value());
+    }
+
 }

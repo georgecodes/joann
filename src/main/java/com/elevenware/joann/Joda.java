@@ -25,5 +25,7 @@ public @interface Joda {
      * value:
      * The time in milliseconds to set Joda time to for the duration of the test
      */
-    long value();
+    long value() default -1L;
+    String timestamp() default "";
+    Format format() default Format.DEFAULT;
 }
