@@ -6,7 +6,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 /**
- * A JUnit rule which allows tests annotated with {@link com.elevenware.testutils.joda.Joda}
+ * A JUnit rule which allows tests annotated with {@link com.elevenware.joann.Joda}
  * to set/re-set Joda time
  */
 public class JodaRule implements TestRule {

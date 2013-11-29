@@ -7,7 +7,7 @@ import org.junit.runners.model.Statement;
 
 /**
  * The JodaAwareJUnit4Runner can be used to run tests which use the
- * {@link com.elevenware.testutils.joda.Joda} annotation
+ * {@link com.elevenware.joann.Joda} annotation
  * <p>
  * Use the JUnit @RunWith annotation with this class, and any tests
  * annotated with @Joda will have Jodatime set at the start, and re-set

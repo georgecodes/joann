@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
  * The Joda annotation can be used in tests to set Joda time
  * <p>
  * The annotation can be attached to JUnit4 test methods, and along with either
- * {@link JodaAwareJUnit4Runner} or {@link JodaRule} will cause the Joda
+ * {@link com.elevenware.joann.JodaAwareJUnit4Runner} or {@link com.elevenware.joann.JodaRule} will cause the Joda
  * time to be set accordingly. Either mechanism also re-sets Joda time to system
  * time when each annotated test finishes.
  * </p>
