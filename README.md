@@ -1,5 +1,7 @@
 #JoAnn
 
+[![Build Status](https://travis-ci.org/georgecodes/joann.png?branch=master)](https://travis-ci.org/georgecodes/joann)
+
 JoAnn - Joda Annotation - makes the use of [Joda time](http://http://www.joda.org/joda-time/) in your tests
 easier, and gets boilerplate out of the way.
 
