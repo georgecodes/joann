@@ -10,92 +10,94 @@ as most Java devs know, is less painful to deal with than the date utilities tha
 you can set the system time - well, Joda's view of it - to whatever you want. Very handy for testing code that might at some point create dates.
 
 Anyways, a typical way of using Joda time in a test looks something like this
+```java
+class TestSomething {
 
-    class TestSomething {
-
-    	@Test
-    	void testthings() {
-
-    		DateTimeUtils.setCurrentMillisFixed(1385554748577L)
-
-    		// do some things
-
-    	}
-
-    	@After
-    	void reset() {
-
-    		DateTimeutils.setCurrentMillisSystem()
-
-    	}
-
+    @Test
+    void testthings() {
+        DateTimeUtils.setCurrentMillisFixed(1385554748577L)
+        // do some things
     }
+
+    @After
+    void reset() {
+        DateTimeutils.setCurrentMillisSystem()
+    }
+}
+```
 
 A few things wrong here. First, it's tedious having to work in milliseconds. Second it's not especially legible, and thirdly you have to remember to reset the time to the real time *in a teardown method* in case your test fails.
 
 So I came up with [JoAnn](https://github.com/georgecodes/joann), which makes things a bit simpler. JoAnn is so called because it's a **Jo**da **Ann**otation. It looks a bit like this
-
-    @Test
-    @Joda(1385554748577L)
-    void testthings() {
-    	// do some things
-    }
+```java
+@Test
+@Joda(1385554748577L)
+void testthings() {
+    // do some things
+}
+```
 
 That's (almost) it. No time fiddling bleeding into your tests, no need to remember to tear it down. Just the annotation. Oh, and a way of getting it invoked. You can use either a JUnit runner, or a JUnit rule, it makes no difference. I've provided both
 
 ## With a rule
+```java
+class MyTests {
 
-    class MyTests {
+    @Rule public JodaRule rule = new JodaRule()
 
-      @Rule public JodaRule rule = new JodaRule()
-
-    }
+}
+```
 
 ## With a runner
-
+```java
     @RunWith(JodaAwareJUnit4Runner)
     class MyTests {
 
     }
+```
 
 It gets even less tedious.
 
 You don't have to use milliseconds to set the time. Set a timestamp instead, and JoAnn will assume you meant an ISO8601 format
-	@Test
-    @Joda(timestamp = "2013-11-29T10:13:22.192Z")
-    void testTheThings() {}
+```java
+@Test
+@Joda(timestamp = "2013-11-29T10:13:22.192Z")
+void testTheThings() {}
+```
 
 Or there are a few more out of the box:
+```java
+@Test
+@Joda(timestamp = '2013-12-25', format = Format.YYYYMMDD)
+void testMoreStuff() {}
 
-    @Test
-    @Joda(timestamp = '2013-12-25', format = Format.YYYYMMDD)
-    void testMoreStuff() {}
-
-    @Test
-    @Joda(timestamp = '2012-11-19 13:03:22', format = Format.YYYYMMDD_HHMMSS)
-    void keepOnTesting() {}
+@Test
+@Joda(timestamp = '2012-11-19 13:03:22', format = Format.YYYYMMDD_HHMMSS)
+void keepOnTesting() {}
+```
 
 Want to see the code? It's on [GitHub](https://github.com/georgecodes/joann)
 
 Want to use it in a Maven project? I'm hosting it myself for now:
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.elevenware</groupId>
+        <artifactId>joann</artifactId>
+        <version>1.0</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
 
-    <dependencies>
-      <dependency>
-            <groupId>com.elevenware</groupId>
-            <artifactId>joann</artifactId>
-            <version>1.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>elevenware-releases</id>
-            <url>http://maven.elevenware.com/repo/releases</url>
-        </repository>
-    </repositories>
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>elevenware-releases</id>
+        <url>http://maven.elevenware.com/repo/releases</url>
+    </repository>
+</repositories>
+```
 
 Enjoy.
