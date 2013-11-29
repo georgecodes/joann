@@ -12,7 +12,8 @@ public enum Format {
     DEFAULT(""),
     USE_MILLIS(""),
     ISO(""),
-    YYYYMMDD("yyyy-MM-dd");
+    YYYYMMDD("yyyy-MM-dd"),
+    YYYYMMDD_HHMMSS("yyyy-MM-dd HH:mm:ss");
 
     private Format(String pattern) {
         this.pattern = pattern;

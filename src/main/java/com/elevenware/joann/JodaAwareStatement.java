@@ -46,6 +46,7 @@ public class JodaAwareStatement extends Statement {
                 setToIso();
                 break;
             case YYYYMMDD:
+            case YYYYMMDD_HHMMSS:
                 setToFormat();
                 break;
             default: {
