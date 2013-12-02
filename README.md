@@ -77,7 +77,7 @@ Or there are a few more out of the box:
 
 Want to see the code? It's on [GitHub](https://github.com/georgecodes/joann)
 
-Want to use it in a Maven project? I'm hosting it myself for now:
+Want to use it in a Maven project? It's now in Maven central.
 
     <dependencies>
       <dependency>
@@ -88,14 +88,5 @@ Want to use it in a Maven project? I'm hosting it myself for now:
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>elevenware-releases</id>
-            <url>http://maven.elevenware.com/repo/releases</url>
-        </repository>
-    </repositories>
 
 Enjoy.

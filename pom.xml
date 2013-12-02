@@ -5,7 +5,28 @@
     <artifactId>joann</artifactId>
     <version>1.1-SNAPSHOT</version>
     <name>Joann - Joda Annotation</name>
+    <description>Allows for trivial setting of Joda time in unit tests</description>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
     <url>https://github.com/georgecodes/joann</url>
+    <developers>
+        <developer>
+            <id>georgemc</id>
+            <name>George McIntosh</name>
+            <url>http://georgemcintosh.com</url>
+            <organization>Elevenware Limited</organization>
+            <organizationUrl>http://elevenware.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -110,6 +131,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <extensions>
             <extension>
@@ -119,7 +153,6 @@
             </extension>
         </extensions>
     </build>
-
     <scm>
         <connection>scm:git:git://github.com/georgecodes/joann.git</connection>
         <developerConnection>scm:git:git@github.com:georgecodes/joann.git</developerConnection>
@@ -128,14 +161,14 @@
   </scm>
     <distributionManagement>
         <repository>
-            <id>elevenware-releases</id>
-            <name>elevenware releases</name>
-            <url>dav:http://maven.elevenware.com/repo/releases</url>
+            <id>sonatype-staging</id>
+            <name>sonatype staging</name>
+            <url>dav:https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
-            <id>elevenware-snapshots</id>
-            <name>elevenware snapshots</name>
-            <url>dav:http://maven.elevenware.com/repo/snapshots</url>
+            <id>sonatype-snapshots</id>
+            <name>sonatype snapshots</name>
+            <url>dav:https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
