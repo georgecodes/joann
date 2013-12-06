@@ -47,7 +47,8 @@ public class JodaAwareJUnit4Runner extends BlockJUnit4ClassRunner {
     @Override
     protected Statement methodInvoker(FrameworkMethod method, Object test) {
         Statement statement = super.methodInvoker(method, test);
-        return new JodaAwareStatement(statement, method.getAnnotation(Joda.class), method.getName());
+        Joda joda = method.getAnnotation(Joda.class);
+        return ( joda == null ) ? statement : new JodaAwareStatement(statement, joda, method.getName());
     }
 
 }

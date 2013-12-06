@@ -24,9 +24,11 @@ package com.elevenware.joann;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
 /**
@@ -35,6 +37,7 @@ import org.junit.runners.model.Statement;
  * @author George McIntosh
  * @since 1.0
  */
+import java.util.IllegalFormatException;
 import java.util.logging.Logger;
 
 public class JodaAwareStatement extends Statement {
@@ -50,34 +53,32 @@ public class JodaAwareStatement extends Statement {
         this.joda = joda;
     }
 
-    @Override
     public void evaluate() throws Throwable {
-        try {
-            doEvaluate();
-        } catch(Throwable rootCause) {
-            String message = String.format("Failed to initialise test %s", testName);
-            throw new JoannException(message, rootCause);
-        }
-    }
-
-    private void doEvaluate() throws Throwable {
         if ( joda == null ) {
             LOG.fine(String.format("Did not find a Joda annotation on '%s'", testName));
             base.evaluate();
             return;
-
         }
 
+        try {
+            prepareTime();
+            base.evaluate();
+        } catch(IllegalFieldValueException rootCause) {
+            String message = String.format("Failed to initialise test %s", testName);
+            DateTimeUtils.setCurrentMillisSystem();
+            throw new IllegalArgumentException(message, rootCause);
+        } finally {
+            LOG.fine(String.format("Re-setting Joda time to system time for %s", testName));
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    private void prepareTime() {
         if ( joda.pattern().equals("")) {
             applyTimeBackwardsCompatible();
         } else {
             applyTimeFromPattern();
         }
-
-        base.evaluate();
-
-        LOG.fine(String.format("Re-setting Joda time to system time for %s", testName));
-        DateTimeUtils.setCurrentMillisSystem();
     }
 
     private void applyTimeFromPattern() {

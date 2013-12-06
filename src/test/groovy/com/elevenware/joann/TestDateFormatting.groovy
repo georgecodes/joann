@@ -4,12 +4,14 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeUtils
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 import static org.junit.Assert.*
 
+@RunWith(JodaAwareJUnit4Runner)
 class TestDateFormatting {
 
-    @Rule public JodaRule rule = new JodaRule();
+//    @Rule public JodaRule rule = new JodaRule();
 
 /*
  * #%L
