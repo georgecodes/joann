@@ -52,12 +52,39 @@ public class JodaAwareStatement extends Statement {
 
     @Override
     public void evaluate() throws Throwable {
+        try {
+            doEvaluate();
+        } catch(Throwable rootCause) {
+            String message = String.format("Failed to initialise test %s", testName);
+            throw new JoannException(message, rootCause);
+        }
+    }
+
+    private void doEvaluate() throws Throwable {
         if ( joda == null ) {
             LOG.fine(String.format("Did not find a Joda annotation on '%s'", testName));
             base.evaluate();
             return;
 
         }
+
+        if ( joda.pattern().equals("")) {
+            applyTimeBackwardsCompatible();
+        } else {
+            applyTimeFromPattern();
+        }
+
+        base.evaluate();
+
+        LOG.fine(String.format("Re-setting Joda time to system time for %s", testName));
+        DateTimeUtils.setCurrentMillisSystem();
+    }
+
+    private void applyTimeFromPattern() {
+        setToFormat(joda.pattern());
+    }
+
+    private void applyTimeBackwardsCompatible() {
         switch(joda.format()) {
             case USE_MILLIS:
                 long value = joda.value();
@@ -83,18 +110,16 @@ public class JodaAwareStatement extends Statement {
 
 
         }
+    }
 
-        base.evaluate();
-
-        LOG.fine(String.format("Re-setting Joda time to system time for %s", testName));
-        DateTimeUtils.setCurrentMillisSystem();
+    private void setToFormat(String pattern) {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+        DateTime dt = fmt.parseDateTime(joda.timestamp());
+        DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
     }
 
     private void setToFormat() {
-        DateTimeFormatter fmt = DateTimeFormat.forPattern(joda.format().pattern());
-        DateTime dt = fmt.parseDateTime(joda.timestamp());
-        DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
-
+       setToFormat(joda.format().pattern());
     }
 
     private void setToIso() {

@@ -50,4 +50,5 @@ public @interface Joda {
     long value() default -1L;
     String timestamp() default "";
     Format format() default Format.DEFAULT;
+    String pattern() default "";
 }

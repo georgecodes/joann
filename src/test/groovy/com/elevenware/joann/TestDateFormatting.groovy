@@ -89,4 +89,20 @@ class TestDateFormatting {
 
     }
 
+    @Test
+    @Joda(timestamp = '2012-11-19 13:03:22', pattern = 'yyyy-MM-dd HH:mm:ss')
+    void setUsingMyOwnPattern() {
+
+        DateTime now = new DateTime()
+
+        assertEquals 2012, now.year
+        assertEquals 11, now.monthOfYear
+        assertEquals 19, now.dayOfMonth
+
+        assertEquals 13, now.hourOfDay
+        assertEquals 3, now.minuteOfHour
+        assertEquals 22, now.secondOfMinute
+
+    }
+
 }
