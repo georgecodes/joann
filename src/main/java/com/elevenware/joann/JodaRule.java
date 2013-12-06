@@ -34,7 +34,7 @@ public class JodaRule implements TestRule {
 
     @Override
     public Statement apply(final Statement base, Description description) {
-
+        new DateFormatLoader().load();
         return new JodaAwareStatement(base, description.getAnnotation(Joda.class), description.getDisplayName());
 
     }
